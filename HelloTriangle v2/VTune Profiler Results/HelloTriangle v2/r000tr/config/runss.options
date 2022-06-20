@@ -1,0 +1,21 @@
+-r
+C:\Users\jongm\source\repos\Vulkan - GLFW - GLM TEST\HelloTriangle v2\VTune Profiler Results\HelloTriangle v2\r000tr
+--stack-stitching
+--data-limit-mb=1000
+--disk-space-limit=0
+--mrte-type=java,dotnet,python
+--itt-config=openmp
+--stack-unwind-limit=8388608
+--itt-config=frame
+--itt-config=task,event,counter
+--stackwalk=offline
+--mrte-mode=auto
+--type=cpu:counters:nostack
+--type=cpu:stack
+--interval=10
+--type=threading:stack
+--type=waiting:stack
+--type=io:stack
+--app-working-dir=C:\Users\jongm\source\repos\Vulkan - GLFW - GLM TEST\HelloTriangle v2\
+--
+C:\Users\jongm\source\repos\Vulkan - GLFW - GLM TEST\x64\Debug\HelloTriangle v2.exe
