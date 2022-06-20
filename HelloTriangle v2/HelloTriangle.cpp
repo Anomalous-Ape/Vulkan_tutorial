@@ -147,11 +147,14 @@ class HelloTriangleApplication {
 
 	//graphics pipeline
 	VkRenderPass renderPass;
+
+	VkPipelineLayout pipelineLayout;
+	VkPipeline graphicsPipeline;
+
+	//descriptors
 	VkDescriptorSetLayout descriptorSetLayout;
 	VkDescriptorPool descriptorPool;
 	std::vector<VkDescriptorSet> descriptorSets;
-	VkPipelineLayout pipelineLayout;
-	VkPipeline graphicsPipeline;
 	
 	//Drawing
 	std::vector<VkFramebuffer> swapChainFramebuffers;
