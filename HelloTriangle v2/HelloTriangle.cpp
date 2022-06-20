@@ -1442,7 +1442,18 @@ private:
 	}
 
 	void createTextureImage() {
+		int texWidth, texHeight, texChannels;
+		stbi_uc* pixels = stbi_load("textures/texture.jpg",
+			&texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+		VkDeviceSize imageSize = texHeight * texWidth * 4;
 
+
+		if (!pixels) {
+			throw std::runtime_error("failed toad texture image!");
+		}
+
+
+		stbi_image_free(pixels);
 	}
 
 
