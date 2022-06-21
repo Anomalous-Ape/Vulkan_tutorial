@@ -1475,6 +1475,20 @@ private:
 			throw std::runtime_error("failed to create image!");
 		}
 
+		VkMemoryRequirements memRequirements;
+		vkGetImageMemoryRequirements(device, image, &memRequirements);
+
+		VkMemoryAllocateInfo allocInfo{};
+		allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+		allocInfo.allocationSize = memRequirements.size;
+		allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, properties);
+
+		if (vkAllocateMemory(device, &allocInfo, nullptr, &imageMemory)
+			!= VK_SUCCESS) {
+			throw std::runtime_error("failed to allocate image memory!");
+		}
+
+		vkBindImageMemory(device, image, imageMemory, 0);
 	}
 
 	void createTextureImage() {
