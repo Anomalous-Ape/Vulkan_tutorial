@@ -182,6 +182,8 @@ class HelloTriangleApplication {
 	VkImage textureImage;
 	VkDeviceMemory textureImageMemory;
 
+	VkImageView textureImageView;
+
 
 public:
 	void run() {
@@ -217,6 +219,7 @@ private:
 		createFrameBuffers();
 		createCommandPool();
 		createTextureImage();
+		createTextureImageView();
 		createVertexBuffer();
 		createIndexBuffer();
 		createUniformBuffers();
@@ -1224,6 +1227,8 @@ private:
 		vkFreeMemory(device, stagingBufferMemory, nullptr);
 	}
 
+	//Buffers
+
 	void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory) {
 		VkBufferCreateInfo bufferInfo{};
 		bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
@@ -1434,6 +1439,8 @@ private:
 
 	}
 
+	//Images
+
 	void createImage(uint32_t width, uint32_t height, VkFormat format,
 		VkImageTiling tiling, VkImageUsageFlags usage, 
 		VkMemoryPropertyFlags properties,VkImage& image, VkDeviceMemory& imageMemory) {
@@ -1540,6 +1547,35 @@ private:
 		
 		vkDestroyBuffer(device, stagingBuffer, nullptr);
 		vkFreeMemory(device, stagingBufferMemory, nullptr);
+	}
+
+	VkImageView createImageView(VkImage image, VkFormat format) {
+		VkImageViewCreateInfo viewInfo{};
+		viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+		viewInfo.image = image;
+		viewInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
+		viewInfo.format = format;
+		viewInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+		viewInfo.subresourceRange.baseMipLevel = 0;
+		viewInfo.subresourceRange.levelCount = 1;
+		viewInfo.subresourceRange.baseArrayLayer = 0;
+		viewInfo.subresourceRange.layerCount = 1;
+
+		VkImageView imageView;
+		if (vkCreateImageView(
+			device,
+			&viewInfo,
+			nullptr,
+			&imageView
+		) != VK_SUCCESS) {
+			throw std::runtime_error("failed to create image view!");
+		}
+		return imageView;
+	}
+
+	void createTextureImageView() {
+		textureImageView = createImageView(textureImage, VK_FORMAT_R8G8B8A8_SRGB);
+
 	}
 
 	//simpified command buffer writing
