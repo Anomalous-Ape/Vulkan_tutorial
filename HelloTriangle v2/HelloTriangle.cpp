@@ -1518,7 +1518,7 @@ private:
 		
 	}
 
-	//Layout Transitions
+	//simpified command buffer writing
 
 	VkCommandBuffer beginSingleTimeCommands() {
 		VkCommandBufferAllocateInfo allocInfo{};
@@ -1554,6 +1554,41 @@ private:
 
 		vkFreeCommandBuffers(device, commandPool, 1,
 			&commandBuffer);
+	}
+
+	//Layout transition
+	void transitionImageLayout(VkImage image, VkFormat format,
+		VkImageLayout oldLayout, VkImageLayout newLayout) {
+		VkCommandBuffer commandBuffer = beginSingleTimeCommands();
+
+		VkImageMemoryBarrier barrier{};
+		barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+		barrier.oldLayout = oldLayout;
+		barrier.newLayout = newLayout;
+		barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+		barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+
+		barrier.image = image;
+		barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+		barrier.subresourceRange.baseMipLevel = 0;
+		barrier.subresourceRange.levelCount = 1;
+		barrier.subresourceRange.baseArrayLayer = 0;
+		barrier.subresourceRange.layerCount = 1;
+
+		barrier.srcAccessMask = 0;
+		barrier.dstAccessMask = 0;
+
+		vkCmdPipelineBarrier(
+			commandBuffer,
+			0,	 //src mask
+			0,    //dst mask
+			0,  //dependency flags
+			0, nullptr, // memory barriers
+			0, nullptr, // buffer memory barriers
+			1, &barrier //image barriers
+		);
+
+		endSingleTimeCommands(commandBuffer);
 	}
 
 
