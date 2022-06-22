@@ -1359,7 +1359,7 @@ private:
 			glm::vec3(0.0f, 0.0f, 1.0f) //axis
 		);
 		ubo.view = glm::lookAt(
-			glm::vec3(2.0f,2.0f,2.0f), //camera/view location
+			glm::vec3(2.0f * cos(time), 2.0f, 1.0f), //camera/view location
 			glm::vec3(0.0f,0.0f,0.0f),	// object location
 			glm::vec3(0.0f,0.0f,1.0f)	//up for the camera
 		);
@@ -1746,21 +1746,21 @@ private:
 		samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
 		samplerInfo.magFilter = VK_FILTER_LINEAR;
 		samplerInfo.minFilter = VK_FILTER_LINEAR;
-		
+
 		samplerInfo.addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT;
 		samplerInfo.addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT;
 		samplerInfo.addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT;
 
 		VkPhysicalDeviceProperties properties{};
 		vkGetPhysicalDeviceProperties(physicalDevice, &properties);
-		
+
 		samplerInfo.anisotropyEnable = VK_TRUE;
 		samplerInfo.maxAnisotropy = properties.limits.maxSamplerAnisotropy;
-		
+
 		samplerInfo.borderColor = VK_BORDER_COLOR_INT_OPAQUE_BLACK;
-		
+
 		samplerInfo.unnormalizedCoordinates = VK_FALSE; //[0,1)
-		
+
 		samplerInfo.compareEnable = VK_FALSE;
 		samplerInfo.compareOp = VK_COMPARE_OP_ALWAYS;
 
