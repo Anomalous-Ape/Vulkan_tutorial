@@ -1787,7 +1787,18 @@ private:
 	//Depth
 
 	void createDepthResources() {
-
+		VkFormat depthFormat = findDepthFormat();
+		createImage(
+			swapChainExtent.width,
+			swapChainExtent.height,
+			depthFormat,
+			VK_IMAGE_TILING_OPTIMAL,
+			VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
+			VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+			depthImage,
+			depthImageMemory
+		);
+		depthImageView = createImageView(depthImage, depthFormat);
 	}
 
 	VkFormat findSupportedFormat(
