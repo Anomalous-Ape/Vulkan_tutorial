@@ -1789,6 +1789,14 @@ private:
 	void createDepthResources() {
 
 	}
+
+	VkFormat findSupportedFormat(
+		const std::vector<VkFormat>& candidates,
+		VkImageTiling tiing,
+		VkFormatFeatureFlags features
+	) {
+
+	}
 };
 
 int main() {
