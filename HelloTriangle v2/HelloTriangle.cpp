@@ -7,6 +7,7 @@
 #include <GLFW/glfw3native.h>
 
 #define GLM_FORCE_RADIANS
+#define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -192,8 +193,12 @@ class HelloTriangleApplication {
 	//Textures
 	VkImage textureImage;
 	VkDeviceMemory textureImageMemory;
-
 	VkImageView textureImageView;
+
+	//Depth
+	VkImage depthImage;
+	VkDeviceMemory depthImageMemory;
+	VkImageView depthImageView;
 
 	//Sampler
 	VkSampler textureSampler;
@@ -232,6 +237,7 @@ private:
 		createGraphicsPipeline();
 		createFrameBuffers();
 		createCommandPool();
+		createDepthResources();
 		createTextureImage();
 		createTextureImageView();
 		createTextureSampler();
@@ -1776,6 +1782,12 @@ private:
 		) != VK_SUCCESS) {
 			throw std::runtime_error("failed to create teture sampler!");
 		}
+	}
+
+	//Depth
+
+	void createDepthResources() {
+
 	}
 };
 
