@@ -98,7 +98,7 @@ struct Vertex {
 
 		attributeDescriptions[0].binding = 0;
 		attributeDescriptions[0].location = 0;
-		attributeDescriptions[0].format = VK_FORMAT_R32G32_SFLOAT;
+		attributeDescriptions[0].format = VK_FORMAT_R32G32B32_SFLOAT;
 		attributeDescriptions[0].offset = offsetof(Vertex, pos);
 
 		attributeDescriptions[1].binding = 0;
@@ -122,20 +122,19 @@ struct UniformBufferObject {
 };
 
 const std::vector<Vertex> vertices = {
-	{{-0.5f, -0.5f, 0.0f},{ 0.0f, 1.0f, 1.0f},{1.0f, 0.0f}},
-	{{0.5f, -0.5f, 0.0f},{ 1.0f, 0.0f, 0.0f},{0.0f, 0.0f}},
-	{{0.5f, 0.5f, 0.0f},{ 0.0f, 1.0f, 0.0f},{0.0f, 1.0f}},
-	{{-0.5f, 0.5f, 0.0f},{ 0.0f, 0.0f, 1.0f},{1.0f, 1.0f}},
+	{{-0.5f, -0.5f, 0.0f},{ 0.0f, 1.0f, 1.0f},{0.0f, 0.0f}},
+	{{0.5f, -0.5f, 0.0f},{ 1.0f, 0.0f, 0.0f},{1.0f, 0.0f}},
+	{{0.5f, 0.5f, 0.0f},{ 0.0f, 1.0f, 0.0f},{1.0f, 1.0f}},
+	{{-0.5f, 0.5f, 0.0f},{ 0.0f, 0.0f, 1.0f},{0.0f, 1.0f}},
 
-	{{-0.5f, -0.5f, -0.5f},{ 0.0f, 1.0f, 1.0f},{1.0f, 0.0f}},
-	{{0.5f, -0.5f, -0.5f},{ 1.0f, 0.0f, 0.0f},{0.0f, 0.0f}},
-	{{0.5f, 0.5f, -0.5f},{ 0.0f, 1.0f, 0.0f},{0.0f, 1.0f}},
-	{{-0.5f, 0.5f, -0.5f},{ 0.0f, 0.0f, 1.0f},{1.0f, 1.0f}}
+	{{-0.5f, -0.5f, -0.5f},{ 1.0f, 1.0f, 1.0f},{0.0f, 0.0f}},
+	{{0.5f, -0.5f, -0.5f},{ 1.0f, 1.0f, 1.0f},{1.0f, 0.0f}},
+	{{0.5f, 0.5f, -0.5f},{ 1.0f, 1.0f, 1.0f},{1.0f, 1.0f}},
+	{{-0.5f, 0.5f, -0.5f},{ 1.0f, 1.0f, 1.0f},{0.0f, 1.0f}}
 };
 
 const std::vector<uint16_t> indices = {
-	0, 1, 2, 2, 3, 0,
-	4, 5, 6, 6, 7, 4
+	0, 1, 2, 2, 3, 0, 4, 5, 6, 6, 7, 4
 };
 
 class HelloTriangleApplication {
@@ -1359,7 +1358,7 @@ private:
 			glm::vec3(0.0f, 0.0f, 1.0f) //axis
 		);
 		ubo.view = glm::lookAt(
-			glm::vec3(2.0f * cos(time), 2.0f, 1.0f), //camera/view location
+			glm::vec3(2.0f * cos(time), 2.0f , 1.0f ), //camera/view location
 			glm::vec3(0.0f,0.0f,0.0f),	// object location
 			glm::vec3(0.0f,0.0f,1.0f)	//up for the camera
 		);
