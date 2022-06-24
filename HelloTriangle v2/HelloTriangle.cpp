@@ -1653,7 +1653,9 @@ private:
 			static_cast<uint32_t>(texWidth),
 			static_cast<uint32_t>(texHeight)
 		);
-		generateMipmaps(textureImage, texWidth, texChannels, mipLevels);
+		generateMipmaps(textureImage,
+			VK_FORMAT_R8G8B8A8_SRGB,
+			texWidth, texChannels, mipLevels);
 
 		vkDestroyBuffer(device, stagingBuffer, nullptr);
 		vkFreeMemory(device, stagingBufferMemory, nullptr);
