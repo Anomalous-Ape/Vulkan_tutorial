@@ -1202,7 +1202,7 @@ private:
 			vkDestroyFramebuffer(device, framebuffer, nullptr);
 		}
 
-		
+		//vkFreeCommandBuffers(device, commandPool, static_cast<uint32_t>(commandBuffers.size()), commandBuffers.data()); //use free instead of destroy commandpool for performance and avoiding wastefulness
 
 		vkDestroyPipeline(device, graphicsPipeline, nullptr);
 		vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
@@ -1233,7 +1233,7 @@ private:
 		createGraphicsPipeline();
 		createDepthResources();
 		createFrameBuffers();
-		
+		//createCommandBuffers();
 	}
 
 	static void framebufferResizeCallback(GLFWwindow* window, int width, int height) {
