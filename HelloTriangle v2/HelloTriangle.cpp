@@ -1601,8 +1601,8 @@ private:
 						texWidth, texHeight 
 					)
 				)
-			)
-			) + 1;
+			) + 1
+			) ;
 
 		if (!pixels) {
 			throw std::runtime_error("failed toad texture image!");
@@ -1962,7 +1962,7 @@ private:
 		samplerInfo.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
 		samplerInfo.mipLodBias = 0.0f;
 		samplerInfo.minLod = 0.0f;
-		samplerInfo.maxLod = 0.0f;
+		samplerInfo.maxLod = static_cast<float>(mipLevels);
 
 		if (vkCreateSampler(
 			device,
