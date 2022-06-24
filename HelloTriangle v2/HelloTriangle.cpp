@@ -1661,6 +1661,7 @@ private:
 
 	void generateMipmaps(
 		VkImage image,
+		VkFormat format,
 		uint32_t texWidth,
 		uint32_t texHeight,
 		uint32_t mipLevels
