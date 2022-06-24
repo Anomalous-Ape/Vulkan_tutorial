@@ -126,21 +126,6 @@ struct UniformBufferObject {
 	alignas(16) glm::mat4 proj;
 };
 
-const std::vector<Vertex> vertices = {
-	{{-0.5f, -0.5f, 0.0f},{ 0.0f, 1.0f, 1.0f},{0.0f, 0.0f}},
-	{{0.5f, -0.5f, 0.0f},{ 1.0f, 0.0f, 0.0f},{1.0f, 0.0f}},
-	{{0.5f, 0.5f, 0.0f},{ 0.0f, 1.0f, 0.0f},{1.0f, 1.0f}},
-	{{-0.5f, 0.5f, 0.0f},{ 0.0f, 0.0f, 1.0f},{0.0f, 1.0f}},
-
-	{{-0.5f, -0.5f, -0.5f},{ 1.0f, 1.0f, 1.0f},{0.0f, 0.0f}},
-	{{0.5f, -0.5f, -0.5f},{ 1.0f, 1.0f, 1.0f},{1.0f, 0.0f}},
-	{{0.5f, 0.5f, -0.5f},{ 1.0f, 1.0f, 1.0f},{1.0f, 1.0f}},
-	{{-0.5f, 0.5f, -0.5f},{ 1.0f, 1.0f, 1.0f},{0.0f, 1.0f}}
-};
-
-const std::vector<uint16_t> indices = {
-	0, 1, 2, 2, 3, 0, 4, 5, 6, 6, 7, 4
-};
 
 class HelloTriangleApplication {
 
@@ -1576,7 +1561,7 @@ private:
 
 	void createTextureImage() {
 		int texWidth, texHeight, texChannels;
-		stbi_uc* pixels = stbi_load("textures/texture.jpg",
+		stbi_uc* pixels = stbi_load(TEXTURE_PATH.c_str(),
 			&texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
 		VkDeviceSize imageSize = texHeight * texWidth * 4;
 
