@@ -192,6 +192,10 @@ class HelloTriangleApplication {
 	//Sampler
 	VkSampler textureSampler;
 
+	//Objects
+	std::vector<Vertex> vertices;
+	std::vector<uint32_t> indices;
+
 
 public:
 	void run() {
