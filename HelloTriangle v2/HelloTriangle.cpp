@@ -28,6 +28,7 @@
 #include <algorithm>
 #include <fstream>
 #include <array>
+#include <unordered_map>
 
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
@@ -1913,6 +1914,8 @@ private:
 			MODEL_PATH.c_str()
 		)) throw std::runtime_error(warn + err);
 
+		std::unordered_map<Vertex, uint32_t> uniqueVertices{};
+
 		for (const auto& shape : shapes) {
 			for (const auto& index : shape.mesh.indices) {
 				Vertex vertex{};
@@ -1927,8 +1930,12 @@ private:
 				};
 
 				vertex.color = { 1.0f,1.0f,1.0f };
-				vertices.push_back(vertex);
-				indices.push_back(indices.size());
+
+				if (uniqueVertices.count(vertex) == 0) {
+					uniqueVertices[vertex] = static_cast<uint32_t>(vertices.size());
+					vertices.push_back(vertex);
+				}
+				indices.push_back(uniqueVertices[vertex]);
 			}
 		}
 
