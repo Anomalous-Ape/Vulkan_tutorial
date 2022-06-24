@@ -217,6 +217,8 @@ class HelloTriangleApplication {
 	std::vector<Vertex> vertices;
 	std::vector<uint32_t> indices;
 
+	//MipMaps
+	uint32_t mipLevels;
 
 public:
 	void run() {
@@ -748,7 +750,7 @@ private:
 		
 		for (size_t i = 0; i < swapChainImages.size(); i++) {
 			swapChainImageViews[i] = createImageView(swapChainImages[i],
-				swapChainImageFormat, VK_IMAGE_ASPECT_COLOR_BIT);
+				swapChainImageFormat, VK_IMAGE_ASPECT_COLOR_BIT, mipLevels);
 		}
 	}
 
@@ -1542,7 +1544,8 @@ private:
 
 	//Images
 
-	void createImage(uint32_t width, uint32_t height, VkFormat format,
+	void createImage(uint32_t width, uint32_t height,
+		uint32_t mipLevels,VkFormat format,
 		VkImageTiling tiling, VkImageUsageFlags usage, 
 		VkMemoryPropertyFlags properties,VkImage& image, VkDeviceMemory& imageMemory) {
 
@@ -1552,7 +1555,7 @@ private:
 		imageInfo.extent.width = width;
 		imageInfo.extent.height = height;
 		imageInfo.extent.depth = 1;
-		imageInfo.mipLevels = 1;
+		imageInfo.mipLevels = mipLevels;
 		imageInfo.arrayLayers = 1;
 		imageInfo.format = format;
 		imageInfo.tiling = tiling;
@@ -1591,6 +1594,15 @@ private:
 			&texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
 		VkDeviceSize imageSize = texHeight * texWidth * 4;
 
+		mipLevels = static_cast<uint32_t>(
+			std::floor(
+				std::log2(
+					std::max(
+						texWidth, texHeight 
+					)
+				)
+			)
+			) + 1;
 
 		if (!pixels) {
 			throw std::runtime_error("failed toad texture image!");
@@ -1619,8 +1631,9 @@ private:
 
 		stbi_image_free(pixels);
 
-		createImage(texWidth, texHeight, VK_FORMAT_R8G8B8A8_SRGB,
+		createImage(texWidth, texHeight,mipLevels, VK_FORMAT_R8G8B8A8_SRGB,
 			VK_IMAGE_TILING_OPTIMAL, 
+			VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
 			VK_IMAGE_USAGE_TRANSFER_DST_BIT |
 			VK_IMAGE_USAGE_SAMPLED_BIT, 
 			VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, 
@@ -1631,7 +1644,8 @@ private:
 			textureImage,
 			VK_FORMAT_R8G8B8A8_SRGB,
 			VK_IMAGE_LAYOUT_UNDEFINED,
-			VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL
+			VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+			mipLevels
 		);
 		copyBufferToImage(
 			stagingBuffer,
@@ -1639,19 +1653,35 @@ private:
 			static_cast<uint32_t>(texWidth),
 			static_cast<uint32_t>(texHeight)
 		);
-		transitionImageLayout(
-			textureImage, 
-			VK_FORMAT_R8G8B8A8_SRGB,
-			VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-			VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
-		);
+		//transitionImageLayout(
+		//	textureImage, 
+		//	VK_FORMAT_R8G8B8A8_SRGB,
+		//	VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+		//	VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+		//	mipLevels
+		//);
 		
 		vkDestroyBuffer(device, stagingBuffer, nullptr);
 		vkFreeMemory(device, stagingBufferMemory, nullptr);
 	}
 
+	void generateMipmaps(
+		VkImage image,
+		uint32_t texWidth,
+		uint32_t texHeight,
+		uint32_t mipLevels
+	) {
+		VkCommandBuffer commandBuffer = beginSingleTimeCommands();
+
+		VkImageMemoryBarrier barrier{};
+		barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+
+
+		endSingleTimeCommands(commandBuffer);
+	}
+
 	VkImageView createImageView(VkImage image, VkFormat format, 
-		VkImageAspectFlags aspectFlags) {
+		VkImageAspectFlags aspectFlags, uint32_t mipLevels) {
 		VkImageViewCreateInfo viewInfo{};
 		viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
 		viewInfo.image = image;
@@ -1659,7 +1689,7 @@ private:
 		viewInfo.format = format;
 		viewInfo.subresourceRange.aspectMask = aspectFlags;
 		viewInfo.subresourceRange.baseMipLevel = 0;
-		viewInfo.subresourceRange.levelCount = 1;
+		viewInfo.subresourceRange.levelCount = mipLevels;
 		viewInfo.subresourceRange.baseArrayLayer = 0;
 		viewInfo.subresourceRange.layerCount = 1;
 
@@ -1677,7 +1707,7 @@ private:
 
 	void createTextureImageView() {
 		textureImageView = createImageView(textureImage, 
-			VK_FORMAT_R8G8B8A8_SRGB, VK_IMAGE_ASPECT_COLOR_BIT);
+			VK_FORMAT_R8G8B8A8_SRGB, VK_IMAGE_ASPECT_COLOR_BIT, mipLevels);
 
 	}
 
@@ -1721,7 +1751,8 @@ private:
 
 	//Layout transition
 	void transitionImageLayout(VkImage image, VkFormat format,
-		VkImageLayout oldLayout, VkImageLayout newLayout) {
+		VkImageLayout oldLayout, VkImageLayout newLayout,
+		uint32_t mipLevels) {
 		VkCommandBuffer commandBuffer = beginSingleTimeCommands();
 
 		VkImageMemoryBarrier barrier{};
@@ -1741,7 +1772,7 @@ private:
 			barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
 		}
 		barrier.subresourceRange.baseMipLevel = 0;
-		barrier.subresourceRange.levelCount = 1;
+		barrier.subresourceRange.levelCount = mipLevels;
 		barrier.subresourceRange.baseArrayLayer = 0;
 		barrier.subresourceRange.layerCount = 1;
 
@@ -1866,6 +1897,7 @@ private:
 		createImage(
 			swapChainExtent.width,
 			swapChainExtent.height,
+			mipLevels,
 			depthFormat,
 			VK_IMAGE_TILING_OPTIMAL,
 			VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
@@ -1874,7 +1906,7 @@ private:
 			depthImageMemory
 		);
 		depthImageView = createImageView(depthImage, 
-			depthFormat, VK_IMAGE_ASPECT_DEPTH_BIT);
+			depthFormat, VK_IMAGE_ASPECT_DEPTH_BIT, mipLevels);
 		//explicit transition
 		//transitionImageLayout(
 		//	depthImage,
