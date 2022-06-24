@@ -750,7 +750,7 @@ private:
 		
 		for (size_t i = 0; i < swapChainImages.size(); i++) {
 			swapChainImageViews[i] = createImageView(swapChainImages[i],
-				swapChainImageFormat, VK_IMAGE_ASPECT_COLOR_BIT, mipLevels);
+				swapChainImageFormat, VK_IMAGE_ASPECT_COLOR_BIT, 1);
 		}
 	}
 
@@ -1978,7 +1978,7 @@ private:
 		createImage(
 			swapChainExtent.width,
 			swapChainExtent.height,
-			mipLevels,
+			1,
 			depthFormat,
 			VK_IMAGE_TILING_OPTIMAL,
 			VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
@@ -1987,7 +1987,7 @@ private:
 			depthImageMemory
 		);
 		depthImageView = createImageView(depthImage, 
-			depthFormat, VK_IMAGE_ASPECT_DEPTH_BIT, mipLevels);
+			depthFormat, VK_IMAGE_ASPECT_DEPTH_BIT, 1);
 		//explicit transition
 		//transitionImageLayout(
 		//	depthImage,
