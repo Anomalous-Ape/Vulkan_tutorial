@@ -132,7 +132,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\jongm\Documents\Visual Studio 2022\Libraries\stb;C:\Users\jongm\Documents\Visual Studio 2022\Libraries\glfw-3.3.7.bin.WIN64\include;C:\Users\jongm\Documents\Visual Studio 2022\Libraries\glm;C:\VulkanSDK\1.2.198.1\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\jongm\Documents\Visual Studio 2022\Libraries\tinyobjloader;C:\Users\jongm\Documents\Visual Studio 2022\Libraries\stb;C:\Users\jongm\Documents\Visual Studio 2022\Libraries\glfw-3.3.7.bin.WIN64\include;C:\Users\jongm\Documents\Visual Studio 2022\Libraries\glm;C:\VulkanSDK\1.2.198.1\Include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
@@ -154,7 +154,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\jongm\Documents\Visual Studio 2022\Libraries\stb;C:\Users\jongm\Documents\Visual Studio 2022\Libraries\glfw-3.3.7.bin.WIN64\include;C:\Users\jongm\Documents\Visual Studio 2022\Libraries\glm;C:\VulkanSDK\1.2.198.1\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\jongm\Documents\Visual Studio 2022\Libraries\tinyobjloader;C:\Users\jongm\Documents\Visual Studio 2022\Libraries\stb;C:\Users\jongm\Documents\Visual Studio 2022\Libraries\glfw-3.3.7.bin.WIN64\include;C:\Users\jongm\Documents\Visual Studio 2022\Libraries\glm;C:\VulkanSDK\1.2.198.1\Include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
