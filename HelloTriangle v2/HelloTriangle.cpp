@@ -1660,7 +1660,8 @@ private:
 		//	VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
 		//	mipLevels
 		//);
-		
+		generateMipmaps(textureImage, texWidth, texChannels, mipLevels);
+
 		vkDestroyBuffer(device, stagingBuffer, nullptr);
 		vkFreeMemory(device, stagingBufferMemory, nullptr);
 	}
