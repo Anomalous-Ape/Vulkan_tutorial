@@ -1423,7 +1423,7 @@ private:
 			glm::vec3(0.0f, 0.0f, 1.0f) //axis
 		);
 		ubo.view = glm::lookAt(
-			glm::vec3(2.0f * cos(time), 2.0f , 1.0f ), //camera/view location
+			glm::vec3(2.0f , 2.0f , 2.0f ), //camera/view location
 			glm::vec3(0.0f,0.0f,0.0f),	// object location
 			glm::vec3(0.0f,0.0f,1.0f)	//up for the camera
 		);
@@ -1631,7 +1631,9 @@ private:
 
 		stbi_image_free(pixels);
 
-		createImage(texWidth, texHeight,mipLevels, VK_FORMAT_R8G8B8A8_SRGB,
+		createImage(texWidth, texHeight,
+			mipLevels,
+			VK_FORMAT_R8G8B8A8_SRGB,
 			VK_IMAGE_TILING_OPTIMAL, 
 			VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
 			VK_IMAGE_USAGE_TRANSFER_DST_BIT |
@@ -1653,12 +1655,14 @@ private:
 			static_cast<uint32_t>(texWidth),
 			static_cast<uint32_t>(texHeight)
 		);
-		generateMipmaps(textureImage,
-			VK_FORMAT_R8G8B8A8_SRGB,
-			texWidth, texChannels, mipLevels);
+	
 
 		vkDestroyBuffer(device, stagingBuffer, nullptr);
 		vkFreeMemory(device, stagingBufferMemory, nullptr);
+
+		generateMipmaps(textureImage,
+			VK_FORMAT_R8G8B8A8_SRGB,
+			texWidth, texHeight, mipLevels);
 	}
 
 	void generateMipmaps(
@@ -1690,7 +1694,7 @@ private:
 		int mipWidth = texWidth;
 		int mipHeight = texHeight;
 
-		for (uint32_t i = 1; i < mipLevels; i++) {
+		for (uint32_t i = 1; i < mipLevels; ++i) {
 			barrier.subresourceRange.baseMipLevel = i - 1;
 			barrier.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
 			barrier.newLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
@@ -1716,8 +1720,9 @@ private:
 			blit.srcSubresource.layerCount = 1;
 			
 			blit.dstOffsets[0] = { 0,0,0 };
-			blit.dstOffsets[1] = { mipWidth > 1 ? mipWidth / 2 : 1,
-			mipHeight > 1 ? mipHeight / 2 : 1, 1 };
+			blit.dstOffsets[1] = {	mipWidth > 1 ? mipWidth / 2 : 1,
+									mipHeight > 1 ? mipHeight / 2 : 1,
+									1 };
 			blit.dstSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
 			blit.dstSubresource.mipLevel = i;
 			blit.dstSubresource.baseArrayLayer = 0;
