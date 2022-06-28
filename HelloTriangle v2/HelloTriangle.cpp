@@ -223,6 +223,10 @@ class HelloTriangleApplication {
 	//MultiSample
 	VkSampleCountFlagBits msaaSamples = VK_SAMPLE_COUNT_1_BIT;
 
+	VkImage colorImage;
+	VkDeviceMemory colorImageMemory;
+	VkImageView colorImageView;
+
 public:
 	void run() {
 		initWindow();
