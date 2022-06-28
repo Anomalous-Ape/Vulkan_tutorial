@@ -1642,6 +1642,7 @@ private:
 
 		createImage(texWidth, texHeight,
 			mipLevels,
+			VK_SAMPLE_COUNT_1_BIT,
 			VK_FORMAT_R8G8B8A8_SRGB,
 			VK_IMAGE_TILING_OPTIMAL, 
 			VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
@@ -1996,6 +1997,7 @@ private:
 			swapChainExtent.width,
 			swapChainExtent.height,
 			1,
+			VK_SAMPLE_COUNT_1_BIT,
 			depthFormat,
 			VK_IMAGE_TILING_OPTIMAL,
 			VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
