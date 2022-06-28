@@ -220,6 +220,9 @@ class HelloTriangleApplication {
 	//MipMaps
 	uint32_t mipLevels;
 
+	//MultiSample
+	VkSampleCountFlagBits msaaSamples = VK_SAMPLE_COUNT_1_BIT;
+
 public:
 	void run() {
 		initWindow();
